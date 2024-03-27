@@ -1,6 +1,6 @@
 # Assignment A1 - Maze Runner
 
-* **Student**: [FIRSTNAME LASTNAME](MACID@mcmaster.ca)
+* **Student**: [VARUN PATHAK](pathav4@mcmaster.ca)
 * **Program**: B. Eng. In Software Engineering
 * **Course code**: SFWRENG 2AA4
 * **Course Title**: Software Design I - Introduction to Software Development
@@ -33,7 +33,7 @@ This program explores a maze, finding a path from an entry point to an exit one.
 To build the program, simply package it with Maven:
 
 ```
-mosser@azrael A1-Template % mvn -q clean package 
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ mvn -q clean package 
 ```
 
 ### Provided version (starter code)
@@ -41,7 +41,7 @@ mosser@azrael A1-Template % mvn -q clean package
 The starter code assumes the maze file name is the first argument.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz.txt
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar ./examples/small.maz.txt
 ** Starting Maze Runner
 **** Reading the maze from file ./examples/small.maz.txt
 WALL WALL WALL WALL WALL WALL WALL WALL WALL WALL WALL 
@@ -63,7 +63,7 @@ PATH NOT COMPUTED
 When called on a non-existing file. it prints an error message
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz.txtd
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar ./examples/small.maz.txtd
 ** Starting Maze Runner
 **** Reading the maze from file ./examples/small.maz.txtd
 /!\ An error has occured /!\
@@ -90,24 +90,24 @@ If you are also delivering the bonus, your program will react to a third flag:
 When no logs are activated, the programs only print the computed path on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar -i ./examples/straight.maz.txt
 4F
-mosser@azrael A1-Template %
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$
 ```
 
 If a given path is correct, the program prints the message `correct path` on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 4F
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 4F
 correct path
-mosser@azrael A1-Template %
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$
 ```
 
 If a given path is incorrect, the program prints the message `incorrect path` on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
 inccorrect path
-mosser@azrael A1-Template %
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$
 ```
 
