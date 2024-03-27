@@ -1,4 +1,4 @@
-# Assignment A1 - Maze Runner
+# Assignment A3 - Maze Runner (again)
 
 * **Student**: [VARUN PATHAK](pathav4@mcmaster.ca)
 * **Program**: B. Eng. In Software Engineering
