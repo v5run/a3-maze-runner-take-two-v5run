@@ -59,9 +59,9 @@ public class Main {
                 logger.debug("Tremaux algorithm chosen.");
                 solver = new TremauxSolver();
             }
-            case "shortestPath" -> {
-                logger.debug("shortestPath Graph algorithm chosen.");
-                solver = new shortestPathSolver();
+            case "bfs" -> {
+                logger.debug("BFS algorithm chosen.");
+                solver = new BFS();
             }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");
