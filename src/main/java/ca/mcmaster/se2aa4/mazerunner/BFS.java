@@ -18,6 +18,7 @@ public class BFS implements GraphSolver {
         Map<Node, Integer> distance = new HashMap<>();
         Map<Node, Node> previous = new HashMap<>();
 
+        // try to fix getGraph ?
         for (Node node : graph.getGraph().keySet()) {
             distance.put(node, Integer.MAX_VALUE);
             previous.put(node, null);
@@ -42,7 +43,14 @@ public class BFS implements GraphSolver {
                 }
             }
         }
-        Path shortestPath = new Path(); // fix this later
+        // rn previous has the shortest path to the end in nodes, so convert into canon.
+        Path shortestPath = findShortestPath(previous, start, end); // fix this later
         return shortestPath;
+    }
+
+    private Path findShortestPath(Map<Node, Node> pathway, Node start, Node end){
+        Path steps = new Path(); // take all nodes from pathway and retrace the node pathway. Add each step to steps
+                                 // does not need to be factored form
+        return steps;
     }
 }

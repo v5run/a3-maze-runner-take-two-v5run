@@ -61,7 +61,7 @@ public class Main {
             }
             case "bfs" -> {
                 logger.debug("BFS algorithm chosen.");
-                //solver = new BFS();
+                //solver = new BFS(); // causes problem bc GraphSolver != MazeSolver
             }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");
