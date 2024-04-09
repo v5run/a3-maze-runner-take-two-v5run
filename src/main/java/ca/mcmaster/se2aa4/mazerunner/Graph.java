@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Graph {
 
-    private final Map<Node, List<Node>> graph = new HashMap<>();
+    private final List<Node> graph = new ArrayList<>();
     private final Maze maze;
     private Node start;
     private Node end;
@@ -24,9 +24,9 @@ public class Graph {
                 Position currentPos = new Position(i, j);
                 if (!maze.isWall(currentPos)) {
                     Node newNode = new Node(i, j);
-                    List<Node> neighbors = findNeighbors(newNode);
+                    findNeighbors(newNode);
                     // fix all this!!! NODE HAS A NEIGHBOR METHOD!!!
-                    graph.put(newNode, neighbors);
+                    graph.put(newNode);
 
                     if (i == maze.getStart().x() && j == maze.getStart().y()){
                         start = newNode;
@@ -39,37 +39,37 @@ public class Graph {
         }
     }
 
-    public Map<Node, List<Node>> getGraph() {
+    public List<Node> getGraph() {
         return graph;
     }
 
-    private List<Node> findNeighbors(Node node) {
-        List<Node> neighbors = new ArrayList<>();
+    private void findNeighbors(Node node) {
+        //List<Node> neighbors = new ArrayList<>();
         int x = node.getX();
         int y = node.getY();
         Position currentPos = new Position(x, y);
         if (x>0){
             currentPos = new Position(x - 1, y); // Left
             if (!maze.isWall(currentPos)) {
-                neighbors.add(new Node(x - 1, y));
+                node.addNeighbor(new Node(x - 1, y));
             }
         }
         if (x < maze.getSizeX()-1){
             currentPos = new Position(x + 1, y);  // Right
             if (!maze.isWall(currentPos)) {
-                neighbors.add(new Node(x + 1, y));
+                node.addNeighbor(new Node(x + 1, y));
             }
         }
         if (y>0){
             currentPos = new Position(x, y - 1);  // Up
             if (!maze.isWall(currentPos)) {
-                neighbors.add(new Node(x, y - 1));
+                node.addNeighbor(new Node(x, y - 1));
             }
         }
         if (y < maze.getSizeY()-1){
             currentPos = new Position(x, y + 1); // Down
             if (!maze.isWall(currentPos)) {
-                neighbors.add(new Node(x, y + 1));
+                node.addNeighbor(new Node(x, y + 1));
             }
         }
         System.out.println(x);
@@ -80,7 +80,6 @@ public class Graph {
             System.out.println(i.getY());
             System.out.println();
         }
-        return neighbors;
     }
 
     public Node getStart(){

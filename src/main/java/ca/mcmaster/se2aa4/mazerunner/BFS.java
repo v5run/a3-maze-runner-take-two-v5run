@@ -13,13 +13,14 @@ public class BFS implements GraphSolver {
 
         Node start = graph.getStart();
         Node end = graph.getEnd();
+        graphList = graph.getGraph();
 
         Queue<Node> queue = new LinkedList<>();
         Map<Node, Integer> distance = new HashMap<>();
         Map<Node, Node> previous = new HashMap<>();
 
         // try to fix getGraph ?
-        for (Node node : graph.getGraph().keySet()) {
+        for (Node node : graphList){ 
             distance.put(node, Integer.MAX_VALUE);
             previous.put(node, null);
         }
@@ -34,9 +35,9 @@ public class BFS implements GraphSolver {
                 break; // Found the shortest path to the end node
             }
 
-            for (Node neighbor : graph.getGraph().get(current)) {
+            for (Node neighbor : graph.getGraph().get(current).getNeighbors()) {
                 int newDistance = distance.get(current) + 1; 
-                if (newDistance < distance.get(neighbor)) {
+                if (newDistance = Integer.MAX_VALUE) {
                     distance.put(neighbor, newDistance);
                     previous.put(neighbor, current);
                     queue.add(neighbor);
