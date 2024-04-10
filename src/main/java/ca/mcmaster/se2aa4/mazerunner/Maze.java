@@ -12,6 +12,7 @@ public class Maze {
     private static final Logger logger = LogManager.getLogger();
 
     private final List<List<Boolean>> maze = new ArrayList<>();
+    private Graph graph;
 
     private final Position start;
     private final Position end;
@@ -39,6 +40,7 @@ public class Maze {
         }
         start = findStart();
         end = findEnd();
+        this.graph = new Graph(this); // make a graph out of the current maze, spits out out of range error
     }
 
     /**
@@ -90,6 +92,14 @@ public class Maze {
      */
     public Position getStart() {
         return start;
+    }
+        /**
+     * Get graph from maze.
+     *
+     * @return Graph
+     */
+    public Graph getGraph() {
+        return graph;
     }
 
     /**
