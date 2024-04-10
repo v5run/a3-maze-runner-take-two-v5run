@@ -4,54 +4,68 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.Map.*;
 
 public class BFS implements GraphSolver {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public Path solve(Graph graph) {
+    public Path solve(Graph map) {
+        
+        Position start = map.getStart();
+        Position end = map.getEnd();
+        Map<Position, List<Position>> graph = map.getGraph();
 
-        Node start = graph.getStart();
-        Node end = graph.getEnd();
-        graphList = graph.getGraph();
+        Queue<Position> queue = new LinkedList<>();
+        Map<Position, Integer> distance = new HashMap<>();
+        Map<Position, Position> previous = new HashMap<>();
 
-        Queue<Node> queue = new LinkedList<>();
-        Map<Node, Integer> distance = new HashMap<>();
-        Map<Node, Node> previous = new HashMap<>();
-
-        // try to fix getGraph ?
-        for (Node node : graphList){ 
+        for (Position node : graph.keySet()){
+            logger.info(node.x() + " " + node.y());
             distance.put(node, Integer.MAX_VALUE);
             previous.put(node, null);
         }
-
+        logger.info("START x: " + start.x() + " y: " + start.y());
         distance.put(start, 0);
         queue.add(start);
 
         while (!queue.isEmpty()) {
-            Node current = queue.poll();
-
+            Position current = queue.poll();
             if (current == end) {
                 break; // Found the shortest path to the end node
             }
-
-            for (Node neighbor : graph.getGraph().get(current).getNeighbors()) {
-                int newDistance = distance.get(current) + 1; 
-                if (newDistance = Integer.MAX_VALUE) {
-                    distance.put(neighbor, newDistance);
+            for (Position neighbor : graph.get(current)) {
+                if (distance.get(neighbor) == Integer.MAX_VALUE) {
+                    distance.put(neighbor, distance.get(current)+1);
+                    //logger.info("x: " + neighbor.x() + " y: " + neighbor.y());
                     previous.put(neighbor, current);
-                    queue.add(neighbor);
+                    queue.offer(neighbor);
                 }
             }
         }
+        logger.info("END x: " + end.x() + " y: " + end.y());
         // rn previous has the shortest path to the end in nodes, so convert into canon.
-        Path shortestPath = findShortestPath(previous, start, end); // fix this later
+        Path shortestPath = findShortestPath(previous, start, end); // DOES NOT ACCOUNT FOR STARTING POSITION BC ONLY EVER ADDS NEIGHBOURS
+        //logger.info("completed solve");
         return shortestPath;
     }
 
-    private Path findShortestPath(Map<Node, Node> pathway, Node start, Node end){
-        Path steps = new Path(); // take all nodes from pathway and retrace the node pathway. Add each step to steps
-                                 // does not need to be factored form
+    private Path findShortestPath(Map<Position, Position> pathway, Position start, Position end){
+
+        Path steps = new Path();
+        // get rid of redundant nodes, only want the shortest path from the end
+        List<Position> simplifiedPath = new ArrayList<>();
+        Position current = end;
+        while (current!=null){
+            simplifiedPath.add(current);
+            current = pathway.get(current);
+        }
+        Collections.reverse(simplifiedPath);
+        for (Position i : simplifiedPath){
+            logger.info("x: " + i.x() + " y: " + i.y());
+        }
+        
+        steps.addStep('F');
         return steps;
     }
 }

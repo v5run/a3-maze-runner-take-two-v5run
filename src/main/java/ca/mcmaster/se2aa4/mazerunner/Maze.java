@@ -93,6 +93,14 @@ public class Maze {
     public Position getStart() {
         return start;
     }
+        /**
+     * Get graph from maze.
+     *
+     * @return Graph
+     */
+    public Graph getGraph() {
+        return graph;
+    }
 
     /**
      * Get end position.

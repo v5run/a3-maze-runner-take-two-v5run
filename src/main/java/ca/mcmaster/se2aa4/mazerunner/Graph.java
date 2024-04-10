@@ -7,10 +7,11 @@ import java.util.*;
 
 public class Graph {
 
-    private final List<Node> graph = new ArrayList<>();
+    private final Map<Position, List<Position>> graph = new HashMap<>();
     private final Maze maze;
-    private Node start;
-    private Node end;
+    private Position start;
+    private Position end;
+    private static final Logger logger = LogManager.getLogger();
     
 
     public Graph(Maze maze) {
@@ -19,74 +20,68 @@ public class Graph {
     }
 
     private void constructGraph() {
+        logger.info("CONSTRUCTING GRAPH");
+        List<Position> neighbors = new ArrayList<>();
         for (int i = 0; i < maze.getSizeX(); i++) {
             for (int j = 0; j < maze.getSizeY(); j++) {
                 Position currentPos = new Position(i, j);
                 if (!maze.isWall(currentPos)) {
-                    Node newNode = new Node(i, j);
-                    findNeighbors(newNode);
-                    // fix all this!!! NODE HAS A NEIGHBOR METHOD!!!
-                    graph.put(newNode);
+                    neighbors = findNeighbors(currentPos);
+                    graph.put(currentPos, neighbors);
 
                     if (i == maze.getStart().x() && j == maze.getStart().y()){
-                        start = newNode;
+                        this.start = currentPos;
                     }
                     else if (i == maze.getEnd().x() && j == maze.getEnd().y()){
-                        end = newNode;
+                        this.end = currentPos;
                     }
                 }
             }
         }
     }
 
-    public List<Node> getGraph() {
+    public Map<Position, List<Position>> getGraph() {
         return graph;
     }
 
-    private void findNeighbors(Node node) {
-        //List<Node> neighbors = new ArrayList<>();
-        int x = node.getX();
-        int y = node.getY();
+    private List<Position> findNeighbors(Position node) {
+        List<Position> neighbors = new ArrayList<>();
+        int x = node.x();
+        int y = node.y();
         Position currentPos = new Position(x, y);
         if (x>0){
-            currentPos = new Position(x - 1, y); // Left
-            if (!maze.isWall(currentPos)) {
-                node.addNeighbor(new Node(x - 1, y));
+            Position leftPos = new Position(x - 1, y); // Left
+            if (!maze.isWall(leftPos)) {
+                neighbors.add(leftPos);
             }
         }
         if (x < maze.getSizeX()-1){
-            currentPos = new Position(x + 1, y);  // Right
-            if (!maze.isWall(currentPos)) {
-                node.addNeighbor(new Node(x + 1, y));
+            //logger.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + "x: " + x + "y: " + y);
+            Position rightPos = new Position(x + 1, y);  // Right
+            if (!maze.isWall(rightPos)) {
+                neighbors.add(rightPos);
             }
         }
         if (y>0){
-            currentPos = new Position(x, y - 1);  // Up
-            if (!maze.isWall(currentPos)) {
-                node.addNeighbor(new Node(x, y - 1));
+            Position upPos = new Position(x, y - 1);  // Up
+            if (!maze.isWall(upPos)) {
+                neighbors.add(upPos);
             }
         }
         if (y < maze.getSizeY()-1){
-            currentPos = new Position(x, y + 1); // Down
-            if (!maze.isWall(currentPos)) {
-                node.addNeighbor(new Node(x, y + 1));
+            Position downPos = new Position(x, y + 1); // Down
+            if (!maze.isWall(downPos)) {
+                neighbors.add(downPos);
             }
         }
-        System.out.println(x);
-        System.out.println(y);
-
-        for (Node i : neighbors) {
-            System.out.println(i.getX());
-            System.out.println(i.getY());
-            System.out.println();
-        }
+        return neighbors;
     }
 
-    public Node getStart(){
+    public Position getStart(){
         return start;
     }
 
-    public Node getEnd(){
+    public Position getEnd(){
         return end;
     }
 }
