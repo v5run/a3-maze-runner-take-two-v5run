@@ -60,12 +60,47 @@ public class BFS implements GraphSolver {
             simplifiedPath.add(current);
             current = pathway.get(current);
         }
+
         Collections.reverse(simplifiedPath);
-        for (Position i : simplifiedPath){
-            logger.info("x: " + i.x() + " y: " + i.y());
+        Position prev = simplifiedPath.get(0);
+        Direction dir = Direction.RIGHT;
+
+        for (int i = 1; i < simplifiedPath.size(); i++){
+            Position next = simplifiedPath.get(i);
+            Direction nextDir = getDirection(prev, next);
+
+            char nextMove = getTurn(dir, nextDir);
+            if (nextMove != 'F'){
+                steps.addStep(nextMove); 
+            }
+            steps.addStep('F');
+            dir = nextDir;
+            prev = next;
         }
-        
-        steps.addStep('F');
         return steps;
+    }
+
+    private Direction getDirection(Position prev, Position next) {
+        if (next.x() == prev.x() && next.y() == prev.y() - 1) {
+            return Direction.UP;
+        } else if (next.x() == prev.x() && next.y() == prev.y() + 1) {
+            return Direction.DOWN;
+        } else if (next.x() == prev.x() - 1 && next.y() == prev.y()) {
+            return Direction.LEFT;
+        } else if (next.x() == prev.x() + 1 && next.y() == prev.y()) {
+            return Direction.RIGHT;
+        }
+        throw new IllegalArgumentException("Invalid positions: " + prev + ", " + next);
+    }
+    
+    private char getTurn(Direction currentDir, Direction nextDir) {
+        if (currentDir == nextDir) {
+            return 'F'; // Move forward
+        } else if (currentDir.turnRight() == nextDir) {
+            return 'R'; // Turn right
+        } else if (currentDir.turnLeft() == nextDir) {
+            return 'L'; // Turn left
+        }
+        throw new IllegalArgumentException("Invalid directions: " + currentDir + ", " + nextDir);
     }
 }
