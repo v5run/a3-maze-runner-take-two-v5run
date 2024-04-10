@@ -48,7 +48,7 @@ public class Graph {
         List<Position> neighbors = new ArrayList<>();
         int x = node.x();
         int y = node.y();
-        Position currentPos = new Position(x, y);
+        
         if (x>0){
             Position leftPos = new Position(x - 1, y); // Left
             if (!maze.isWall(leftPos)) {
@@ -56,7 +56,6 @@ public class Graph {
             }
         }
         if (x < maze.getSizeX()-1){
-            //logger.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + "x: " + x + "y: " + y);
             Position rightPos = new Position(x + 1, y);  // Right
             if (!maze.isWall(rightPos)) {
                 neighbors.add(rightPos);

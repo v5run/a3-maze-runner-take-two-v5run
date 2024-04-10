@@ -8,6 +8,7 @@ import java.util.Map.*;
 
 public class BFS implements GraphSolver {
     private static final Logger logger = LogManager.getLogger();
+    private Direction dir = Direction.RIGHT; // assume intially facing right
 
     @Override
     public Path solve(Graph map) {
@@ -40,7 +41,7 @@ public class BFS implements GraphSolver {
                 }
             }
         }
-        Path shortestPath = findShortestPath(previous, start, end); // DOES NOT ACCOUNT FOR STARTING POSITION BC ONLY EVER ADDS NEIGHBOURS
+        Path shortestPath = findShortestPath(previous, start, end);
         return shortestPath;
     }
 
@@ -57,7 +58,9 @@ public class BFS implements GraphSolver {
 
         Collections.reverse(simplifiedPath);
         Position prev = simplifiedPath.get(0);
-        Direction dir = Direction.RIGHT;
+        if (start.x() != 0){
+            this.dir = Direction.LEFT;
+        }
 
         for (int i = 1; i < simplifiedPath.size(); i++){
             Position next = simplifiedPath.get(i);
@@ -75,25 +78,31 @@ public class BFS implements GraphSolver {
     }
 
     private Direction getDirection(Position prev, Position next) {
-        if (next.x() == prev.x() && next.y() == prev.y() - 1) {
-            return Direction.UP;
-        } else if (next.x() == prev.x() && next.y() == prev.y() + 1) {
-            return Direction.DOWN;
-        } else if (next.x() == prev.x() - 1 && next.y() == prev.y()) {
-            return Direction.LEFT;
-        } else if (next.x() == prev.x() + 1 && next.y() == prev.y()) {
-            return Direction.RIGHT;
+        if (next.x() == prev.x()) {
+            if (next.y() == prev.y() - 1){
+                return Direction.UP;
+            }
+            if (next.y() == prev.y() + 1){
+                return Direction.DOWN;
+            }
+        } else if (next.y() == prev.y()) {
+            if (next.x() == prev.x() - 1){
+                return Direction.LEFT; 
+            }
+            else if (next.x() == prev.x() + 1){
+                return Direction.RIGHT;
+            }
         }
         throw new IllegalArgumentException("Invalid positions: " + prev + ", " + next);
     }
     
     private char getTurn(Direction currentDir, Direction nextDir) {
         if (currentDir == nextDir) {
-            return 'F'; // Move forward
+            return 'F';
         } else if (currentDir.turnRight() == nextDir) {
-            return 'R'; // Turn right
+            return 'R';
         } else if (currentDir.turnLeft() == nextDir) {
-            return 'L'; // Turn left
+            return 'L';
         }
         throw new IllegalArgumentException("Invalid directions: " + currentDir + ", " + nextDir);
     }
