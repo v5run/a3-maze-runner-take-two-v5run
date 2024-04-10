@@ -21,11 +21,9 @@ public class BFS implements GraphSolver {
         Map<Position, Position> previous = new HashMap<>();
 
         for (Position node : graph.keySet()){
-            logger.info(node.x() + " " + node.y());
             distance.put(node, Integer.MAX_VALUE);
             previous.put(node, null);
         }
-        logger.info("START x: " + start.x() + " y: " + start.y());
         distance.put(start, 0);
         queue.add(start);
 
@@ -37,16 +35,12 @@ public class BFS implements GraphSolver {
             for (Position neighbor : graph.get(current)) {
                 if (distance.get(neighbor) == Integer.MAX_VALUE) {
                     distance.put(neighbor, distance.get(current)+1);
-                    //logger.info("x: " + neighbor.x() + " y: " + neighbor.y());
                     previous.put(neighbor, current);
                     queue.offer(neighbor);
                 }
             }
         }
-        logger.info("END x: " + end.x() + " y: " + end.y());
-        // rn previous has the shortest path to the end in nodes, so convert into canon.
         Path shortestPath = findShortestPath(previous, start, end); // DOES NOT ACCOUNT FOR STARTING POSITION BC ONLY EVER ADDS NEIGHBOURS
-        //logger.info("completed solve");
         return shortestPath;
     }
 
