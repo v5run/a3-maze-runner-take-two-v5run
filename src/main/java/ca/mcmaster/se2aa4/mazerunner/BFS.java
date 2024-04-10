@@ -9,6 +9,9 @@ import java.util.Map.*;
 public class BFS implements GraphSolver {
     private static final Logger logger = LogManager.getLogger();
     private Direction dir = Direction.RIGHT; // assume intially facing right
+    private Queue<Position> queue = new LinkedList<>();
+    private Map<Position, Boolean> visited = new HashMap<>();
+    private Map<Position, Position> previous = new HashMap<>();
 
     @Override
     public Path solve(Graph map) {
@@ -17,15 +20,11 @@ public class BFS implements GraphSolver {
         Position end = map.getEnd();
         Map<Position, List<Position>> graph = map.getGraph();
 
-        Queue<Position> queue = new LinkedList<>();
-        Map<Position, Integer> distance = new HashMap<>();
-        Map<Position, Position> previous = new HashMap<>();
-
         for (Position node : graph.keySet()){
-            distance.put(node, Integer.MAX_VALUE);
+            visited.put(node, false);
             previous.put(node, null);
         }
-        distance.put(start, 0);
+        visited.put(start, true);
         queue.add(start);
 
         while (!queue.isEmpty()) {
@@ -34,8 +33,8 @@ public class BFS implements GraphSolver {
                 break; // Found the shortest path to the end node
             }
             for (Position neighbor : graph.get(current)) {
-                if (distance.get(neighbor) == Integer.MAX_VALUE) {
-                    distance.put(neighbor, distance.get(current)+1);
+                if (!visited.get(neighbor)) { // if not visited, then mark visited
+                    visited.put(neighbor, true);
                     previous.put(neighbor, current);
                     queue.offer(neighbor);
                 }
