@@ -6,6 +6,36 @@
 * **Course Title**: Software Design I - Introduction to Software Development
 * Term: *Level II - Winter 2024*
 
+## **Credit**: [Alexandre Lachance](alexandrelachance@me.com) and [Dr. Jelle Hellings](jhellings@mcmaster.ca)
+
+### The two people mentioned are referenced as they helped in creating the solution provided. Alexandre provided the base solution of the project, whereas Dr. Hellings' algorithm's were used and referenced in the culmination of the project. Thanks to them!
+#### Content Used:
+- (9) Graphs: Elementary Graph Algorithms, Winter 2024, SFWRENG 2C03, McMaster University
+- (10) Graph Algorithms: Minimal Spanning Trees and Shortest Paths, Winter 2024, SFWRENG 2C03, McMaster University
+
+## My Contribution
+
+`-method BFS` results in the provided maze to be solved with the Breadth-First graph algorithm
+
+```
+varun@DESKTOP-B1M8S22:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar -method bfs -i ./examples/tiny.ma
+z.txt
+3F L 4F R 3F
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$
+```
+
+If `-baseline XXX -method YYY` is called then the speedup and runtimes of the algorithms `XXX` in terms of `YYY` are provided
+
+```
+varun@DESKTOP-B1M8S22:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar -baseline righthand -method bfs -i ./examples/straight.maz.txt
+Maze elapsed-time: 3ms
+-baseline algorithm time: 4ms
+-method algorithm time: 2ms
+4F
+Speedup: path_baseline/path_method = 1.00
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$
+```
+
 ## Business Logic Specification
 
 This program explores a maze, finding a path from an entry point to an exit one.
@@ -28,6 +58,11 @@ This program explores a maze, finding a path from an entry point to an exit one.
     - For this assignment, the path does not have to be the shortest one.
 - The program can take a path as input and verify if it's a legit one.
 
+The following project has **three methods of solving a maze!** This includes ...
+-     RightHand Algorithm -> Stuck in a maze? Put your right hand on wall and follow it out.
+-     Tremaux's Algorithm -> Been there? Done that! Mark a path and forget about it.
+-     Breadth-First Search -> turning the Maze -> Graph w/ Nodes and Edges to solve!
+
 ## How to run this software?
 
 To build the program, simply package it with Maven:
@@ -38,7 +73,7 @@ pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ mvn -q clean package
 
 ### Provided version (starter code)
 
-The starter code assumes the maze file name is the first argument.
+The starter code assumes the maze file name when -i is provided in the command line.
 
 ```
 pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar ./examples/small.maz.txt
@@ -80,6 +115,9 @@ The delivered program at the end of this assignment should use the following fla
 
 - `-i MAZE_FILE`: specifies the filename to be used;
 - `-p PATH_SEQUENCE`: activates the path verification mode to validate that PATH_SEQUENCE is correct for the maze
+- `-method method`: specifies the method you wish to run;
+- `-baseline method`: specifies the method you wish to run a baseline test to compare -method with;
+
 
 If you are also delivering the bonus, your program will react to a third flag:
 
@@ -108,6 +146,27 @@ If a given path is incorrect, the program prints the message `incorrect path` on
 ```
 pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
 inccorrect path
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$
+```
+
+If `-baseline` is called then the speedup and runtimes of the algorithms are provided
+
+```
+varun@DESKTOP-B1M8S22:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar -baseline righthand -method bfs -i ./examples/straight.maz.txt
+Maze elapsed-time: 3ms
+-baseline algorithm time: 4ms
+-method algorithm time: 2ms
+4F
+Speedup: path_baseline/path_method = 1.00
+pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$
+```
+
+`-method BFS` results in the provided maze to be solved with the Breadth-First graph algorithm
+
+```
+varun@DESKTOP-B1M8S22:~/a3-maze-runner-take-two-v5run$ java -jar target/mazerunner.jar -method bfs -i ./examples/tiny.ma
+z.txt
+3F L 4F R 3F
 pathav4@LAPTOP:~/a3-maze-runner-take-two-v5run$
 ```
 
