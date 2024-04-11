@@ -8,6 +8,10 @@ import java.util.Map.*;
 
 public class BFS implements GraphSolver {
     private static final Logger logger = LogManager.getLogger();
+    private Direction dir = Direction.RIGHT; // assume intially facing right
+    private Queue<Position> queue = new LinkedList<>();
+    private Map<Position, Boolean> visited = new HashMap<>();
+    private Map<Position, Position> previous = new HashMap<>();
 
     @Override
     public Path solve(Graph map) {
@@ -16,37 +20,27 @@ public class BFS implements GraphSolver {
         Position end = map.getEnd();
         Map<Position, List<Position>> graph = map.getGraph();
 
-        Queue<Position> queue = new LinkedList<>();
-        Map<Position, Integer> distance = new HashMap<>();
-        Map<Position, Position> previous = new HashMap<>();
-
         for (Position node : graph.keySet()){
-            logger.info(node.x() + " " + node.y());
-            distance.put(node, Integer.MAX_VALUE);
+            visited.put(node, false);
             previous.put(node, null);
         }
-        logger.info("START x: " + start.x() + " y: " + start.y());
-        distance.put(start, 0);
+        visited.put(start, true);
         queue.add(start);
 
         while (!queue.isEmpty()) {
             Position current = queue.poll();
             if (current == end) {
-                break; // Found the shortest path to the end node
+                break; // found the shortest path to the end node
             }
             for (Position neighbor : graph.get(current)) {
-                if (distance.get(neighbor) == Integer.MAX_VALUE) {
-                    distance.put(neighbor, distance.get(current)+1);
-                    //logger.info("x: " + neighbor.x() + " y: " + neighbor.y());
+                if (!visited.get(neighbor)) { // if not visited, then mark visited
+                    visited.put(neighbor, true);
                     previous.put(neighbor, current);
                     queue.offer(neighbor);
                 }
             }
         }
-        logger.info("END x: " + end.x() + " y: " + end.y());
-        // rn previous has the shortest path to the end in nodes, so convert into canon.
-        Path shortestPath = findShortestPath(previous, start, end); // DOES NOT ACCOUNT FOR STARTING POSITION BC ONLY EVER ADDS NEIGHBOURS
-        //logger.info("completed solve");
+        Path shortestPath = findShortestPath(previous, start, end);
         return shortestPath;
     }
 
@@ -63,7 +57,9 @@ public class BFS implements GraphSolver {
 
         Collections.reverse(simplifiedPath);
         Position prev = simplifiedPath.get(0);
-        Direction dir = Direction.RIGHT;
+        if (start.x() != 0){
+            this.dir = Direction.LEFT;
+        }
 
         for (int i = 1; i < simplifiedPath.size(); i++){
             Position next = simplifiedPath.get(i);
@@ -81,25 +77,31 @@ public class BFS implements GraphSolver {
     }
 
     private Direction getDirection(Position prev, Position next) {
-        if (next.x() == prev.x() && next.y() == prev.y() - 1) {
-            return Direction.UP;
-        } else if (next.x() == prev.x() && next.y() == prev.y() + 1) {
-            return Direction.DOWN;
-        } else if (next.x() == prev.x() - 1 && next.y() == prev.y()) {
-            return Direction.LEFT;
-        } else if (next.x() == prev.x() + 1 && next.y() == prev.y()) {
-            return Direction.RIGHT;
+        if (next.x() == prev.x()) {
+            if (next.y() == prev.y() - 1){
+                return Direction.UP;
+            }
+            if (next.y() == prev.y() + 1){
+                return Direction.DOWN;
+            }
+        } else if (next.y() == prev.y()) {
+            if (next.x() == prev.x() - 1){
+                return Direction.LEFT; 
+            }
+            else if (next.x() == prev.x() + 1){
+                return Direction.RIGHT;
+            }
         }
         throw new IllegalArgumentException("Invalid positions: " + prev + ", " + next);
     }
     
     private char getTurn(Direction currentDir, Direction nextDir) {
         if (currentDir == nextDir) {
-            return 'F'; // Move forward
+            return 'F';
         } else if (currentDir.turnRight() == nextDir) {
-            return 'R'; // Turn right
+            return 'R';
         } else if (currentDir.turnLeft() == nextDir) {
-            return 'L'; // Turn left
+            return 'L';
         }
         throw new IllegalArgumentException("Invalid directions: " + currentDir + ", " + nextDir);
     }

@@ -48,28 +48,27 @@ public class Graph {
         List<Position> neighbors = new ArrayList<>();
         int x = node.x();
         int y = node.y();
-        Position currentPos = new Position(x, y);
+        
         if (x>0){
-            Position leftPos = new Position(x - 1, y); // Left
+            Position leftPos = new Position(x - 1, y);
             if (!maze.isWall(leftPos)) {
                 neighbors.add(leftPos);
             }
         }
         if (x < maze.getSizeX()-1){
-            //logger.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + "x: " + x + "y: " + y);
-            Position rightPos = new Position(x + 1, y);  // Right
+            Position rightPos = new Position(x + 1, y);
             if (!maze.isWall(rightPos)) {
                 neighbors.add(rightPos);
             }
         }
         if (y>0){
-            Position upPos = new Position(x, y - 1);  // Up
+            Position upPos = new Position(x, y - 1);
             if (!maze.isWall(upPos)) {
                 neighbors.add(upPos);
             }
         }
         if (y < maze.getSizeY()-1){
-            Position downPos = new Position(x, y + 1); // Down
+            Position downPos = new Position(x, y + 1);
             if (!maze.isWall(downPos)) {
                 neighbors.add(downPos);
             }

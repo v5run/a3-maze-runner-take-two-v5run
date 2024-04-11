@@ -7,6 +7,9 @@ import org.apache.logging.log4j.Logger;
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
+    private static Path pathBaseLine;
+    private static Path path;
+    private static Baseline baseline = new Baseline();
 
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
@@ -15,28 +18,48 @@ public class Main {
         CommandLine cmd = null;
         try {
             cmd = parser.parse(getParserOptions(), args);
+            if (cmd.hasOption("baseline")) {
+
+                String filePath = cmd.getOptionValue('i');
+                logger.info(filePath);
+                baseline.start(System.currentTimeMillis());
+                Maze maze = new Maze(filePath);
+                baseline.end(System.currentTimeMillis());
+                System.out.println("Maze elapsed-time: " + baseline.runtime() + "ms");
+
+                String baselineMethod = cmd.getOptionValue("baseline");
+                pathBaseLine = baseline.ExploreMaze(baselineMethod,maze);
+            }
             String filePath = cmd.getOptionValue('i');
             Maze maze = new Maze(filePath);
-
             if (cmd.getOptionValue("p") != null) {
                 logger.info("Validating path");
-                Path path = new Path(cmd.getOptionValue("p"));
+                path = new Path(cmd.getOptionValue("p"));
                 if (maze.validatePath(path)) {
                     System.out.println("correct path");
                 } else {
                     System.out.println("incorrect path");
                 }
             } else {
-                String method = cmd.getOptionValue("method", "righthand");
-                Path path = solveMaze(method, maze);
+                logger.info("BFS algo chosen");
+                String method = cmd.getOptionValue("method", "bfs");
+                if (cmd.hasOption("baseline")) {
+                    baseline.start(System.currentTimeMillis());
+                    path = solveMaze(method, maze);
+                    baseline.end(System.currentTimeMillis());
+                    
+                    System.out.println("-method algorithm time: " + baseline.runtime() + "ms");
+                    System.out.println(path.getFactorizedForm());
+                    baseline.SpeedUp(pathBaseLine, path);
+                } else {
+                path = solveMaze(method, maze);
                 System.out.println(path.getFactorizedForm());
-            }
+            } }
         } catch (Exception e) {
             System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
             logger.error("MazeSolver failed.  Reason: " + e.getMessage());
             logger.error("PATH NOT COMPUTED");
         }
-
         logger.info("End of MazeRunner");
     }
 
@@ -88,6 +111,7 @@ public class Main {
 
         options.addOption(new Option("p", true, "Path to be verified in maze"));
         options.addOption(new Option("method", true, "Specify which path computation algorithm will be used"));
+        options.addOption(new Option("baseline",true,"Comparison of path computation of two given paths"));
 
         return options;
     }
