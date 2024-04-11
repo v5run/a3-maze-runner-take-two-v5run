@@ -21,6 +21,7 @@ public class Main {
             if (cmd.hasOption("baseline")) {
 
                 String filePath = cmd.getOptionValue('i');
+                logger.info(filePath);
                 baseline.start(System.currentTimeMillis());
                 Maze maze = new Maze(filePath);
                 baseline.end(System.currentTimeMillis());

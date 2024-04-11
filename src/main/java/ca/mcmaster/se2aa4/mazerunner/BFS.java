@@ -30,7 +30,7 @@ public class BFS implements GraphSolver {
         while (!queue.isEmpty()) {
             Position current = queue.poll();
             if (current == end) {
-                break; // Found the shortest path to the end node
+                break; // found the shortest path to the end node
             }
             for (Position neighbor : graph.get(current)) {
                 if (!visited.get(neighbor)) { // if not visited, then mark visited
